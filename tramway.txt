@@ -1,0 +1,553 @@
+Enter password: **********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 19
+Server version: 8.0.36 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| centreformation    |
+| information_schema |
+| isgi               |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| test3              |
+| world              |
++--------------------+
+9 rows in set (0.03 sec)
+
+mysql> create database tramway;
+Query OK, 1 row affected (1.06 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| centreformation    |
+| information_schema |
+| isgi               |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| test3              |
+| tramway            |
+| world              |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use tramway;
+Database changed
+mysql> create table ligne(
+    -> IdLigne int primary key,
+    -> DateService date,
+    -> NombrePass int,
+    -> longeur float);
+Query OK, 0 rows affected (1.92 sec)
+
+mysql> show table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> show table ligne;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ligne' at line 1
+mysql> show tables;
++-------------------+
+| Tables_in_tramway |
++-------------------+
+| ligne             |
++-------------------+
+1 row in set (0.11 sec)
+
+mysql> desc table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> desc ligne;
++-------------+-------+------+-----+---------+-------+
+| Field       | Type  | Null | Key | Default | Extra |
++-------------+-------+------+-----+---------+-------+
+| IdLigne     | int   | NO   | PRI | NULL    |       |
+| DateService | date  | YES  |     | NULL    |       |
+| NombrePass  | int   | YES  |     | NULL    |       |
+| longeur     | float | YES  |     | NULL    |       |
++-------------+-------+------+-----+---------+-------+
+4 rows in set (0.09 sec)
+
+mysql> insert into ligne values
+    -> (1,"2000-01-31",18, 300.5);
+Query OK, 1 row affected (0.22 sec)
+
+mysql> select * from ligne;
++---------+-------------+------------+---------+
+| IdLigne | DateService | NombrePass | longeur |
++---------+-------------+------------+---------+
+|       1 | 2000-01-31  |         18 |   300.5 |
++---------+-------------+------------+---------+
+1 row in set (0.00 sec)
+
+mysql> alter table ligne
+    -> add StationDepart foreign key;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key' at line 2
+mysql> alter table ligne
+    -> add StationDepart varchar(30) foreign ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign' at line 2
+mysql> alter table ligne
+    -> add StationDepart  varchar(30) foreign key;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key' at line 2
+mysql> alter table ligne
+    -> add column StationDepart varchar(30);
+Query OK, 0 rows affected (0.60 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc ligne;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| IdLigne       | int         | NO   | PRI | NULL    |       |
+| DateService   | date        | YES  |     | NULL    |       |
+| NombrePass    | int         | YES  |     | NULL    |       |
+| longeur       | float       | YES  |     | NULL    |       |
+| StationDepart | varchar(30) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table ligne
+    -> add foreign key(StationDepart);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> alter table ligne
+    -> add foreign key (StationDepart) references table(ligne);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table(ligne)' at line 2
+mysql> alter table  ligne
+    -> add foreign key (StationDepart) references ligne  (StationDepart);
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'ligne_ibfk_1' in the referenced table 'ligne'
+mysql> alter table ligne
+    -> add column StationArrive  varchar(30);
+Query OK, 0 rows affected (0.45 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc ligne;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| IdLigne       | int         | NO   | PRI | NULL    |       |
+| DateService   | date        | YES  |     | NULL    |       |
+| NombrePass    | int         | YES  |     | NULL    |       |
+| longeur       | float       | YES  |     | NULL    |       |
+| StationDepart | varchar(30) | YES  |     | NULL    |       |
+| StationArrive | varchar(30) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> create table Station;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table station (
+    -> IdStation int  ,
+    -> nomStation varchar(30));
+Query OK, 0 rows affected (0.44 sec)
+
+mysql> desc Station;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| IdStation  | int         | YES  |     | NULL    |       |
+| nomStation | varchar(30) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create  table  travaux(
+    -> lieu varchar(30),
+    -> DateDebut date,
+    -> duree int,
+    -> IdTravaux int primary  key);
+Query OK, 0 rows affected (0.45 sec)
+
+mysql> desc travaux;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| lieu      | varchar(30) | YES  |     | NULL    |       |
+| DateDebut | date        | YES  |     | NULL    |       |
+| duree     | int         | YES  |     | NULL    |       |
+| IdTravaux | int         | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.03 sec)
+
+mysql> alter table Station
+    -> add column NumArrondi int;
+Query OK, 0 rows affected (0.37 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Station
+    -> add primary key(IdStation);
+Query OK, 0 rows affected (1.14 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Station;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| IdStation  | int         | NO   | PRI | NULL    |       |
+| nomStation | varchar(30) | YES  |     | NULL    |       |
+| NumArrondi | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> create table Arrondissement ;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table Arrondissement(
+    -> NumArrondi int primary key,
+    -> superficie varchar(30),
+    -> NbreHabitant int);
+Query OK, 0 rows affected (0.88 sec)
+
+mysql> desc Arrondissement;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| NumArrondi   | int         | NO   | PRI | NULL    |       |
+| superficie   | varchar(30) | YES  |     | NULL    |       |
+| NbreHabitant | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table station
+    -> add foreign key (StationDepart) references ligne(StationDepart);
+ERROR 1072 (42000): Key column 'StationDepart' doesn't exist in table
+mysql>
+mysql> alter table ligne
+    -> add foreign key (stationDepart) references Station(IdStation);
+ERROR 3780 (HY000): Referencing column 'stationDepart' and referenced column 'IdStation' in foreign key constraint 'ligne_ibfk_1' are incompatible.
+mysql> alter table station
+    ->
+    -> ;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> alter table ligne
+    -> modify StationDepart int;
+Query OK, 1 row affected (0.69 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> alter table ligne
+    -> modify StationAriive int ;
+ERROR 1054 (42S22): Unknown column 'StationAriive' in 'ligne'
+mysql> alter table ligne
+    -> modify StationArrive  int;
+Query OK, 1 row affected (0.64 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> alter table ligne
+    -> add foreign  key (StationDepart) references Station(IdStation);
+Query OK, 1 row affected (1.14 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> desc ligne;
++---------------+-------+------+-----+---------+-------+
+| Field         | Type  | Null | Key | Default | Extra |
++---------------+-------+------+-----+---------+-------+
+| IdLigne       | int   | NO   | PRI | NULL    |       |
+| DateService   | date  | YES  |     | NULL    |       |
+| NombrePass    | int   | YES  |     | NULL    |       |
+| longeur       | float | YES  |     | NULL    |       |
+| StationDepart | int   | YES  | MUL | NULL    |       |
+| StationArrive | int   | YES  |     | NULL    |       |
++---------------+-------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table ligne
+    -> add foreign key  (StationArrive) references Station(IdStation);
+Query OK, 1 row affected (0.86 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> desc ligne;
++---------------+-------+------+-----+---------+-------+
+| Field         | Type  | Null | Key | Default | Extra |
++---------------+-------+------+-----+---------+-------+
+| IdLigne       | int   | NO   | PRI | NULL    |       |
+| DateService   | date  | YES  |     | NULL    |       |
+| NombrePass    | int   | YES  |     | NULL    |       |
+| longeur       | float | YES  |     | NULL    |       |
+| StationDepart | int   | YES  | MUL | NULL    |       |
+| StationArrive | int   | YES  | MUL | NULL    |       |
++---------------+-------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select * from station;
+Empty set (0.00 sec)
+
+mysql> desc  Station;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| IdStation  | int         | NO   | PRI | NULL    |       |
+| nomStation | varchar(30) | YES  |     | NULL    |       |
+| NumArrondi | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into station  values
+    -> (1,"Mhamid",2);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select  * from station;
++-----------+------------+------------+
+| IdStation | nomStation | NumArrondi |
++-----------+------------+------------+
+|         1 | Mhamid     |          2 |
++-----------+------------+------------+
+1 row in set (0.00 sec)
+
+mysql> alter table Station
+    -> add foreign key (NumArrondi)references Arrondissement(NumArrondi);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`tramway`.`#sql-8c0_13`, CONSTRAINT `station_ibfk_1` FOREIGN KEY (`NumArrondi`) REFERENCES `arrondissement` (`NumArrondi`))
+mysql> desc Arrondissement;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| NumArrondi   | int         | NO   | PRI | NULL    |       |
+| superficie   | varchar(30) | YES  |     | NULL    |       |
+| NbreHabitant | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> descStation;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'descStation' at line 1
+mysql> desc Station;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| IdStation  | int         | NO   | PRI | NULL    |       |
+| nomStation | varchar(30) | YES  |     | NULL    |       |
+| NumArrondi | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table Station
+    -> add foreign key (NumArrondi) references Arrondissement (NumArrondi);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`tramway`.`#sql-8c0_13`, CONSTRAINT `station_ibfk_1` FOREIGN KEY (`NumArrondi`) REFERENCES `arrondissement` (`NumArrondi`))
+mysql> insert into Arrondissement values
+    -> (2,"askjour",3000);
+Query OK, 1 row affected (0.24 sec)
+
+mysql> alter table station
+    -> add foreign key (NumArrondi) references Arrondissement (NumArrondi);
+Query OK, 1 row affected (2.00 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> desc Station;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| IdStation  | int         | NO   | PRI | NULL    |       |
+| nomStation | varchar(30) | YES  |     | NULL    |       |
+| NumArrondi | int         | YES  | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table  lst;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table lst(
+    -> IdStation int ,
+    -> IdLigne int,
+    -> IdLigne int primary key);
+ERROR 1060 (42S21): Duplicate column name 'IdLigne'
+mysql> create table lst(
+    -> IdStation int primary key,
+    -> IdLigne int primary key,
+    -> IdTravaux int primary key);
+ERROR 1068 (42000): Multiple primary key defined
+mysql> create table lst
+    -> IdStation int primary key,
+    -> IdLigne int,
+    -> IdTravaux int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IdStation int primary key,
+IdLigne int,
+IdTravaux int)' at line 2
+mysql> create lst(
+    -> IdStation int primary key,
+    -> IdLigne int,
+    -> IdTravaux int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'lst(
+IdStation int primary key,
+IdLigne int,
+IdTravaux int)' at line 1
+mysql> create lst (
+    -> IdStation int,
+    -> Id ligne,
+    -> IdTravaux int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'lst (
+IdStation int,
+Id ligne,
+IdTravaux int)' at line 1
+mysql> create  lst(
+    -> IdStation int,
+    -> idLigne int,
+    ->
+    -> IdTravaux int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'lst(
+IdStation int,
+idLigne int,
+
+IdTravaux int)' at line 1
+mysql> create table lst(
+    -> IdStation int,
+    -> IdLigne int,
+    -> IdTravaux);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 4
+mysql> create table lst(
+    -> idstation int,
+    -> idligne int,
+    -> idtravaux int);
+Query OK, 0 rows affected (0.40 sec)
+
+mysql> desc lst;
++-----------+------+------+-----+---------+-------+
+| Field     | Type | Null | Key | Default | Extra |
++-----------+------+------+-----+---------+-------+
+| idstation | int  | YES  |     | NULL    |       |
+| idligne   | int  | YES  |     | NULL    |       |
+| idtravaux | int  | YES  |     | NULL    |       |
++-----------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc station;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| IdStation  | int         | NO   | PRI | NULL    |       |
+| nomStation | varchar(30) | YES  |     | NULL    |       |
+| NumArrondi | int         | YES  | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql> desc ligne;
++---------------+-------+------+-----+---------+-------+
+| Field         | Type  | Null | Key | Default | Extra |
++---------------+-------+------+-----+---------+-------+
+| IdLigne       | int   | NO   | PRI | NULL    |       |
+| DateService   | date  | YES  |     | NULL    |       |
+| NombrePass    | int   | YES  |     | NULL    |       |
+| longeur       | float | YES  |     | NULL    |       |
+| StationDepart | int   | YES  | MUL | NULL    |       |
+| StationArrive | int   | YES  | MUL | NULL    |       |
++---------------+-------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> desc travaux;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| lieu      | varchar(30) | YES  |     | NULL    |       |
+| DateDebut | date        | YES  |     | NULL    |       |
+| duree     | int         | YES  |     | NULL    |       |
+| IdTravaux | int         | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table slt
+    -> add foreign key(idstation) references station (idstation);
+ERROR 1146 (42S02): Table 'tramway.slt' doesn't exist
+mysql> alter table lst
+    -> add foreign key (idstation) references station (idstation);
+Query OK, 0 rows affected (2.90 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table lst
+    -> add foreign key (idligne) references ligne(idligne);
+Query OK, 0 rows affected (2.93 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table lst
+    -> add foreign key (idtravaux) refences travaux(idtravaux);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'refences travaux(idtravaux)' at line 2
+mysql> alter table lst
+    -> add foreign key (idtravaux) references travaux  (idtravaux);
+Query OK, 0 rows affected (2.24 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select  *from ligne;
++---------+-------------+------------+---------+---------------+---------------+
+| IdLigne | DateService | NombrePass | longeur | StationDepart | StationArrive |
++---------+-------------+------------+---------+---------------+---------------+
+|       1 | 2000-01-31  |         18 |   300.5 |          NULL |          NULL |
++---------+-------------+------------+---------+---------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> select* from station;
++-----------+------------+------------+
+| IdStation | nomStation | NumArrondi |
++-----------+------------+------------+
+|         1 | Mhamid     |          2 |
++-----------+------------+------------+
+1 row in set (0.00 sec)
+
+mysql> select  * from arrondissement ;
++------------+------------+--------------+
+| NumArrondi | superficie | NbreHabitant |
++------------+------------+--------------+
+|          2 | askjour    |         3000 |
++------------+------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> desc travaux;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| lieu      | varchar(30) | YES  |     | NULL    |       |
+| DateDebut | date        | YES  |     | NULL    |       |
+| duree     | int         | YES  |     | NULL    |       |
+| IdTravaux | int         | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into travaux values
+    -> ("bab doukala","2023-04-21",34,1);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select * from ligne join station where ligne.StationDepart=station.idstation;
+Empty set (0.03 sec)
+
+mysql> insert into ligne values
+    -> (2,"2020-03-14",11,300.5,1,2);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`tramway`.`ligne`, CONSTRAINT `ligne_ibfk_2` FOREIGN KEY (`StationArrive`) REFERENCES `station` (`IdStation`))
+mysql>  insert into ligne values
+    ->  (2,"2020-03-14",11,300.5,1);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> alter ttable lst
+    -> add primary key ( idstation ,  idligne , idtravaux);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ttable lst
+add primary key ( idstation ,  idligne , idtravaux)' at line 1
+mysql>
+mysql> desc lst;
++-----------+------+------+-----+---------+-------+
+| Field     | Type | Null | Key | Default | Extra |
++-----------+------+------+-----+---------+-------+
+| idstation | int  | YES  | MUL | NULL    |       |
+| idligne   | int  | YES  | MUL | NULL    |       |
+| idtravaux | int  | YES  | MUL | NULL    |       |
++-----------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table lst
+    ->  add primary key ( idstation ,  idligne , idtravaux);
+Query OK, 0 rows affected (1.79 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc lst;
++-----------+------+------+-----+---------+-------+
+| Field     | Type | Null | Key | Default | Extra |
++-----------+------+------+-----+---------+-------+
+| idstation | int  | NO   | PRI | NULL    |       |
+| idligne   | int  | NO   | PRI | NULL    |       |
+| idtravaux | int  | NO   | PRI | NULL    |       |
++-----------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql>
